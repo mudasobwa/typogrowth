@@ -9,11 +9,12 @@ Gem::Specification.new do |s|
   s.authors = ['Alexei Matyushkin']
   s.email = 'am@mudasobwa.ru'
   s.homepage = 'http://github.com/mudasobwa/typogrowth'
-  s.summary = %Q{Simple library to produce typography texts}
-  s.description = %Q{TODO: detailed description of your gem}
+  s.license = 'LICENSE'
+  s.summary = %Q{Simple library to produce typographyed texts}
+  s.description = %Q{Gem provides string monkeypatches to typograph strings}
   s.extra_rdoc_files = [
     'LICENSE',
-    'README.rdoc',
+    'README.md',
   ]
 
   s.required_rubygems_version = Gem::Requirement.new('>= 1.3.7')
@@ -29,5 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'bueller'
+  
+  s.add_dependency 'psych'
 end
 

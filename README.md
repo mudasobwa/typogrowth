@@ -1,6 +1,13 @@
 # Typogrowth
 
-TODO: Write a gem description
+Typogrowth is the simple gem, providing easy way to make string
+typographically correct. It introduce the class method:
+
+    Typogrowth::Parser.parse string, lang = nil
+
+as well as it monkeypatches `String` class with `typo` method.
+If language is omitted, it uses `I18n.locale`. Also `:default`
+may be specified as language setting (which is english, in fact.)
 
 ## Installation
 
@@ -18,7 +25,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    s = 'And God said "Baz heard "Bar" once" , and there was light.'
+    puts s.typo
+    # ⇒ And God said “Baz heard ‘Bar’ once,” and there was light.
 
 ## Contributing
 
