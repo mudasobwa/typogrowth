@@ -94,7 +94,7 @@
 
 :dashes :
   :mdash :
-    :re : '\s*(?<dash>—|–| - |--)\s*'
+    :re : '\s*(?<dash> - |--)\s*'
     :default :
       - '—'
     :ru :
