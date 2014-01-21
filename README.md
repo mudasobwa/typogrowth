@@ -6,7 +6,9 @@
 Typogrowth is the simple gem, providing easy way to make string
 typographically correct. It introduce the class method:
 
+```ruby
     Typogrowth.parse string, lang = nil
+```
 
 as well as it monkeypatches `String` class with `typo` method.
 If language is omitted, it uses `I18n.locale`. Also `:default`
@@ -31,6 +33,7 @@ Or install it yourself as:
 
 ## Usage
 
+```ruby
     s = 'And God said "Baz heard "Bar" once" , and there was light.'
     puts s.typo
     # ⇒ And God said “Baz heard ‘Bar’ once,” and there was light.
@@ -47,6 +50,7 @@ Or install it yourself as:
     # ⇒ And God said “Oslo coordinates are: 59°57′N 10°45′E” and there was light.
     puts s 
     # ⇒ And God said “Oslo coordinates are: 59°57′N 10°45′E” and there was light.
+```
 
 ## Contributing
 
