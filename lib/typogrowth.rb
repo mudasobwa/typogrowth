@@ -2,6 +2,8 @@
 
 require 'yaml'
 
+require 'uri'
+require 'base64'
 require_relative 'typogrowth/version'
 require_relative 'utils/hash_recursive_merge'
 
@@ -72,6 +74,7 @@ module Typogrowth
     # @param lang the language to use rules for
     #
     def self.parse! str, lang = :default
+      str.gsub!(URI.regexp) { |m| "⚓#{Base64.encode64 m}⚓" }
       lang = lang.to_sym
       instance.yaml.each { |k, values|
         values.each { |k, v|
@@ -102,8 +105,10 @@ module Typogrowth
           end
         }
       }
+      str.gsub!(/⚓(.*)⚓/m) { |m| Base64.decode64 m }
       str
     end
+
     # Out-of-place version of `String` typographing. See #parse!
     def self.parse str, lang = :default
       self.parse! str.dup, lang

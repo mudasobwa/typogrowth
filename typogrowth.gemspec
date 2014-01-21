@@ -27,10 +27,10 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_development_dependency 'rspec'
-#  s.add_development_dependency 'rspec-expectations'
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'cucumber'
-  s.add_development_dependency 'bueller'
+  s.add_development_dependency 'yard-cucumber'
   
   s.add_dependency 'psych'
   s.add_dependency 'i18n'

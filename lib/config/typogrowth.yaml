@@ -1,11 +1,11 @@
 :quotes :
   :punctuation :
-    :re : '(?<quote>''|")\s*(?<punct>[.,!?]+)'  
+    :re : '(?<quote>''|")\s*(?<punct>[.,!?]+)'
     :default :
       - '\k<punct>\k<quote>'
     :ru :
       - '\k<quote>\k<punct>'
-  
+
   # That's a 6.3" man, he sees sunsets at 10°20'30" E.
   #             ⇑
   :inch :
@@ -34,6 +34,13 @@
   :apostrophe_pre :
     :pattern : ''''
     :re : '(?<=\p{Alpha})('')(?=\p{Alpha})'
+    :default : 
+      - '♻'
+  # And God said 'Foos' game is over'.
+  #                  ⇑
+  :apostrophe_squeez :
+    :pattern : ''''
+    :re : '(?<=s)('')(?=\s)'
     :default : 
       - '♻'
   # And God said "∇×(∇×F) = ∇(∇·F) − ∇2F" and there was light.
@@ -76,7 +83,7 @@
   #     ⇑
   :apostrophe_post :
     :pattern : '♻'
-    :re : '(?<=\p{Alpha})(♻)(?=\p{Alpha})'
+    :re : '♻'
     :default :
       - '’'
 
@@ -92,7 +99,11 @@
     :default :
       - '”'
 
-:dashes :
+:others :
+  :ellipsis :
+    :re : '\.{3,}'
+    :default :
+      - '…'
   :mdash :
     :re : '\s*(?<dash> - |--)\s*'
     :default :
@@ -101,3 +112,21 @@
       - ' — '
     :us :
       - ' – '
+
+:punctuation :
+  :opening_orphan :
+    :re : '([(¿¡§#№]|\p{Sc})(?:\s)*'
+    :default :
+      - '\1'
+  :closing_orphan :
+    :re : '(?:\s)*([.,:;!?)])'
+    :default :
+      - '\1'
+  :closing_clamped :
+    :re : '([.,:;!?)])(?=\p{Lu})'
+    :default :
+      - '\1 '
+  :fixup :
+    :re : '([!?.]+)(?:\s*)(\.+)'
+    :default :
+      - '\1\2'

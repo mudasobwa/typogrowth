@@ -16,6 +16,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "And God said \"That's a 6.3\" man, he sees sunsets at 10°20'30\" E.\" and there was light." | "And God said “That’s a 6.3″ man, he sees sunsets at 10°20′30″ E.” and there was light." |
         | "And God said \"Foo\" , and there was light." | "And God said “Foo,” and there was light." |
         | "And God said \"Baz heard 'Foos' Bar' once\" , and there was light." | "And God said “Baz heard ‘Foos’ Bar’ once,” and there was light." |
+        | "And God, loving ellipsis, said.... And..." | "And God, loving ellipsis, said… And…" |
 
   Scenario Outline: Quotes and punctuation in Russian
     Given the input string is <input>
@@ -27,4 +28,19 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                          | output                             |
         | "И Бог сказал: \"Я - слышу \"Бум\" и \"Бам\" где-то там\" , и стало светло." | "И Бог сказал: «Я — слышу „Бум“ и „Бам“ где-то там», и стало светло." |
         | "И Бог сказал: \"Я - слышу \"Бум \"и\" Бам\" где-то там\" , и стало светло." | "И Бог сказал: «Я — слышу „Бум «и» Бам“ где-то там», и стало светло." |
+        | "Строка со ссылкой: http://wikipedia.org (ссылка)." | "Строка со ссылкой: http://wikipedia.org (ссылка)." | 
  
+  Scenario Outline: Spacing before/after punctuation
+    Given the input string is <input>
+    When input string is processed with Typogrowl’s typography parser
+    Then the typoed result should equal to <output>
+
+    Examples:
+        | input                                  | output                                |
+        | "It’s raining.Pity."                   | "It’s raining. Pity."                 |
+        | "It’s raining . Pity."                 | "It’s raining. Pity."                 |
+        | "It’s raining   .Pity."                | "It’s raining. Pity."                 |
+        | "Link http://wikipedia.org here."      | "Link http://wikipedia.org here."     |
+        | "Here is http://wikipedia.org. See?."  | "Here is http://wikipedia.org. See?." |
+        | "Here is exclamation ellipsis!.."      | "Here is exclamation ellipsis!.."     |
+        | "Here is exclamation ellipsis! . ."    | "Here is exclamation ellipsis!.."     |
