@@ -1,5 +1,8 @@
 # Typogrowth
 
+[![Build Status](https://travis-ci.org/mudasobwa/typogrowth.png)](https://travis-ci.org/mudasobwa/typogrowth)
+[![Gemnasium](https://gemnasium.com/mudasobwa/typogrowth.png?travis)](https://gemnasium.com/mudasobwa/typogrowth)
+
 Typogrowth is the simple gem, providing easy way to make string
 typographically correct. It introduce the class method:
 
