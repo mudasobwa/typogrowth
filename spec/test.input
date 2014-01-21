@@ -1,0 +1,24 @@
+And God said "∇×(∇×F) = ∇(∇·F) − ∇2F" and there was light.
+And God said “∇×(∇×F) = ∇(∇·F) − ∇2F” and there was light.
+And God said "I--heard "Booh "Bah" Booh" and "Bam" in heaven" and there was light.
+And God said “I—heard ‘Booh “Bah” Booh’ and ‘Bam’ in heaven” and there was light.
+And God said "I - heard "Booh Bah Booh" and "Bam" in heaven" and there was light.
+And God said “I—heard ‘Booh Bah Booh’ and ‘Bam’ in heaven” and there was light.
+And God said "Oslo coordinates are: 59°57′N 10°45′E" and there was light.
+And God said “Oslo coordinates are: 59°57′N 10°45′E” and there was light.
+And God said "That's a 6.3" man, he sees sunsets at 10°20'30" E." and there was light.
+And God said “That’s a 6.3″ man, he sees sunsets at 10°20′30″ E.” and there was light.
+And God said "Foo" , and there was light.
+And God said “Foo,” and there was light.
+And God said "Baz heard 'Foos' Bar' once" , and there was light.
+And God said “Baz heard ‘Foos’ Bar’ once,” and there was light.
+And God, loving ellipsis, said.... And...
+And God, loving ellipsis, said… And…
+
+An easier way to solve the problem requires understanding that regular expressions can be written as finite state machines, and vice versa.
+
+Let's start by building the state machine which matches multiples of 3. We know that a number is a multiple of 3, if and only if the sums of the digits are a multiple of 3 (divisibility by three proof).
+
+The state machine is going to process the input and keep track of the sum of the digits. We only need the sum modulo 3, so we'll have a pretty simple state machine with 3 states: state A (starting state), state B (we are off by 1), state C (we are off by 2).
+
+When we are in state A, if we get a "0", "3", "6" or "9", we remain on state A. If we get a "1", "4" or "7" we move to state B. If we get a "2", "5" or "8" we move to state C.

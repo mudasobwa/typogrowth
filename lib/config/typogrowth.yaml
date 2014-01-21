@@ -1,6 +1,6 @@
 :quotes :
   :punctuation :
-    :re : '(?<quote>''|")\s*(?<punct>[.,!?]+)'
+    :re : '(?<quote>''|"|\))\s*(?<punct>[.,!?]+)'
     :default :
       - '\k<punct>\k<quote>'
     :ru :

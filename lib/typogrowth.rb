@@ -74,45 +74,49 @@ module Typogrowth
     # @param str [String] the string to be typographyed inplace
     # @param lang the language to use rules for
     #
-    def self.parse! str, lang = :default
-      str.gsub!(URI.regexp) { |m| "⚓#{Base64.encode64 m}⚓" }
+    def self.parse str, lang = :default
       lang = lang.to_sym
-      instance.yaml.each { |k, values|
-        values.each { |k, v|
-          if !!v[:re]
-            v[lang] = v[:default] if (!v[lang] || v[lang].size.zero?)
-            raise MalformedRulesFile.new "Malformed rules file (no subst for #{v})" \
-              if !v[lang] || v[lang].size.zero?
-            substituted = !!v[:pattern] ?
-                str.gsub!(/#{v[:re]}/) { |m| m.gsub(/#{v[:pattern]}/, v[lang].first) } :
-                str.gsub!(/#{v[:re]}/, v[lang].first)
-            # logger.warn "Unsafe substitutions were made to source:\n# ⇒ #{str}"\
-            #  if v[:alert] && substituted
-            if v[lang].size > 1
-              str.gsub!(/#{v[lang].first}/) { |m|
-                prev = $`
-                obsoletes = prev.count(v[lang].join)
-                compliants = values[v[:compliant].to_sym][lang] || 
-                             values[v[:compliant].to_sym][:default]
-                obsoletes -= prev.count(compliants.join) \
-                  if !!v[:compliant]
-                !!v[:slave] ?
-                  obsoletes -= prev.count(v[:original]) + 1 :
-                  obsoletes += prev.count(v[:original])
-                
-                v[lang][obsoletes % v[lang].size]
-              }
+      str.split(/\R{2,}/).map { |para|
+        para.gsub(URI.regexp) { |m| "⚓#{Base64.encode64 m}⚓" }
+        instance.yaml.each { |k, values|
+          values.each { |k, v|
+            if !!v[:re]
+              v[lang] = v[:default] if (!v[lang] || v[lang].size.zero?)
+              raise MalformedRulesFile.new "Malformed rules file (no subst for #{v})" \
+                if !v[lang] || v[lang].size.zero?
+              substituted = !!v[:pattern] ?
+                  para.gsub!(/#{v[:re]}/) { |m| m.gsub(/#{v[:pattern]}/, v[lang].first) } :
+                  para.gsub!(/#{v[:re]}/, v[lang].first)
+              # logger.warn "Unsafe substitutions were made to source:\n# ⇒ #{para}"\
+              #  if v[:alert] && substituted
+              if v[lang].size > 1
+                para.gsub!(/#{v[lang].first}/) { |m|
+                  prev = $`
+                  obsoletes = prev.count(v[lang].join)
+                  compliants = values[v[:compliant].to_sym][lang] || 
+                               values[v[:compliant].to_sym][:default]
+                  obsoletes -= prev.count(compliants.join) \
+                    if !!v[:compliant]
+                  !!v[:slave] ?
+                    obsoletes -= prev.count(v[:original]) + 1 :
+                    obsoletes += prev.count(v[:original])
+                  
+                  v[lang][obsoletes % v[lang].size]
+                }
+              end
             end
-          end
+          }
         }
-      }
-      str.gsub!(/⚓(.*)⚓/m) { |m| Base64.decode64 m }
-      str
+        para
+      }.join(%Q(
+
+))
+      .gsub(/⚓(.*)⚓/m) { |m| Base64.decode64 m }
     end
 
     # Out-of-place version of `String` typographing. See #parse!
-    def self.parse str, lang = :default
-      self.parse! str.dup, lang
+    def self.parse! str, lang = :default
+      str.replace self.parse(str, lang)
     end
   private
     DEFAULT_SET = 'typogrowth'
