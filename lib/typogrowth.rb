@@ -5,6 +5,7 @@ require 'yaml'
 require 'uri'
 require 'base64'
 require_relative 'typogrowth/version'
+require_relative 'typogrowth/string'
 require_relative 'utils/hash_recursive_merge'
 
 # 
@@ -115,7 +116,6 @@ module Typogrowth
     end
   private
     DEFAULT_SET = 'typogrowth'
-    ENTITIES = %w{re}
     
     def initialize file
       @yaml = YAML.load_file "#{File.dirname(__FILE__)}/config/#{file}.yaml"
@@ -129,6 +129,13 @@ module Typogrowth
     end
         
     private_class_method :new  
+  end
+
+  def self.parse str, lang = :default
+    Parser.parse str, lang
+  end
+  def self.parse! str, lang = :default
+    Parser.parse! str, lang
   end
 end
 

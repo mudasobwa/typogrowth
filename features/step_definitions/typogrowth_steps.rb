@@ -6,12 +6,17 @@ end
 
 When(/^input string is processed with Typogrowl’s typography parser$/) do
   @content.gsub! /\\+"/, '"'
-  @typo = Typogrowth::Parser.parse @content
+  @typo = Typogrowth.parse @content
 end
 
 When(/^input string is processed with Typogrowl’s typography parser with lang "(.*?)"$/) do |lang|
   @content.gsub! /\\+"/, '"'
-  @typo = Typogrowth::Parser.parse @content, lang
+  @typo = Typogrowth.parse @content, lang
+end
+
+When(/^input string is modified inplace with typo!$/) do
+  @typoed = @content.dup
+  @typoed.typo!
 end
 
 Then(/^neither single nor double quotes are left in the string$/) do
@@ -20,4 +25,16 @@ end
 
 Then(/^the typoed result should equal to "(.*?)"$/) do |str|
   @typo.should == str
+end
+
+Then(/^the call to string’s typo should equal to "(.*?)"$/) do |str|
+  @content.typo.should == str
+end
+
+Then(/^the call to string’s typo with lang "(.*?)" should equal to "(.*?)"$/) do |lang, str|
+  @content.typo('ru').should == str
+end
+
+Then(/^typoed result should equal to "(.*?)"$/) do |str|
+  @typoed.should == str
 end

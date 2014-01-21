@@ -5,6 +5,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
     Given the input string is <input>
     When input string is processed with Typogrowl’s typography parser
     Then the typoed result should equal to <output>
+    And the call to string’s typo should equal to <output>
     And neither single nor double quotes are left in the string
 
     Examples:
@@ -22,6 +23,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
     Given the input string is <input>
     When input string is processed with Typogrowl’s typography parser with lang "ru"
     Then the typoed result should equal to <output>
+    And the call to string’s typo with lang "ru" should equal to <output>
     And neither single nor double quotes are left in the string
 
     Examples:
@@ -34,6 +36,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
     Given the input string is <input>
     When input string is processed with Typogrowl’s typography parser
     Then the typoed result should equal to <output>
+    And the call to string’s typo should equal to <output>
 
     Examples:
         | input                                  | output                                |
@@ -44,3 +47,8 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here is http://wikipedia.org. See?."  | "Here is http://wikipedia.org. See?." |
         | "Here is exclamation ellipsis!.."      | "Here is exclamation ellipsis!.."     |
         | "Here is exclamation ellipsis! . ."    | "Here is exclamation ellipsis!.."     |
+
+  Scenario: Inplace string modification
+    Given the input string is "Foo 'Bar' Baz"
+    When input string is modified inplace with typo!
+    Then typoed result should equal to "Foo “Bar” Baz"

@@ -9,6 +9,9 @@ as well as it monkeypatches `String` class with `typo` method.
 If language is omitted, it uses `I18n.locale`. Also `:default`
 may be specified as language setting (which is english, in fact.)
 
+To modify the succession of quotation signs (as well as all the 
+others options,) feel free to change `config/typogrowth.yaml`. 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -28,6 +31,19 @@ Or install it yourself as:
     s = 'And God said "Baz heard "Bar" once" , and there was light.'
     puts s.typo
     # ⇒ And God said “Baz heard ‘Bar’ once,” and there was light.
+    puts Typogrowth.parse(s)
+    # ⇒ And God said “Baz heard ‘Bar’ once,” and there was light.
+
+    s = 'И Бог сказал: "Я - слышу "Бум" и "Бам" где-то там" , и стало светло.'
+    puts s.typo('ru')  # Explicit locale specification may be omitted
+                       #       while running under ru_RU.UTF-8 locale
+    # ⇒ И Бог сказал: «Я — слышу „Бум“ и „Бам“ где-то там», и стало светло.
+
+    s = 'And God said "Oslo coordinates are: 59°57′N 10°45′E" and there was light.'
+    s.typo!
+    # ⇒ And God said “Oslo coordinates are: 59°57′N 10°45′E” and there was light.
+    puts s 
+    # ⇒ And God said “Oslo coordinates are: 59°57′N 10°45′E” and there was light.
 
 ## Contributing
 
