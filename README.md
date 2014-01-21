@@ -6,7 +6,7 @@
 Typogrowth is the simple gem, providing easy way to make string
 typographically correct. It introduce the class method:
 
-    Typogrowth::Parser.parse string, lang = nil
+    Typogrowth.parse string, lang = nil
 
 as well as it monkeypatches `String` class with `typo` method.
 If language is omitted, it uses `I18n.locale`. Also `:default`
