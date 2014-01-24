@@ -115,11 +115,11 @@
 
 :punctuation :
   :opening_orphan :
-    :re : '([(¿¡§#№]|\p{Sc})(?:\s)*'
+    :re : '([(¿¡§#№]|\p{Sc})(?:\s+)'
     :default :
       - '\1'
   :closing_orphan :
-    :re : '(?:\s)*([.,:;!?)])'
+    :re : '(?:\s+)([.,:;!?)])'
     :default :
       - '\1'
   :closing_clamped :
@@ -130,3 +130,13 @@
     :re : '([!?.]+)(?:\s*)(\.+)'
     :default :
       - '\1\2'
+      
+:orphans :
+  :dangling_right :
+    :re : '(?<=\s|\A)(\p{L})\s+'
+    :default :
+      - '\1 '
+  :dangling_left :
+    :re : '\s+(p{Punct})(?=\s|\Z)'
+    :default :
+      - ' \1'

@@ -78,7 +78,7 @@ module Typogrowth
       lang = lang.to_sym
       str.split(/\R{2,}/).map { |para|
         para.gsub(URI.regexp) { |m| "⚓#{Base64.encode64 m}⚓" }
-        instance.yaml.each { |k, values|
+        instance.yaml.each { |key, values|
           values.each { |k, v|
             if !!v[:re]
               v[lang] = v[:default] if (!v[lang] || v[lang].size.zero?)
