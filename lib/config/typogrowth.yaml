@@ -87,6 +87,19 @@
     :default :
       - '’'
 
+  :quotes_single :
+    :re : '\s+''\s+(.+?)\s+''\s+'
+    :default :
+      - ' ‘\1’ '
+    :ru :
+      - ' «\1» '
+  :quotes_double :
+    :re : '\s+"\s+(.+?)\s+"\s+'
+    :default :
+      - ' “\1” '
+    :ru :
+      - ' «\1» '
+
   :alone_single :
     :re : '('')'
     :alert: true
@@ -98,20 +111,6 @@
     :alert: true
     :default :
       - '”'
-
-:others :
-  :ellipsis :
-    :re : '\.{3,}'
-    :default :
-      - '…'
-  :mdash :
-    :re : '\s*(?<dash> - |--)\s*'
-    :default :
-      - '—'
-    :ru :
-      - ' — '
-    :us :
-      - ' – '
 
 :punctuation :
   :opening_orphan :
@@ -130,7 +129,20 @@
     :re : '([!?.]+)(?:\s*)(\.+)'
     :default :
       - '\1\2'
+  :ellipsis :
+    :re : '\.{3,}'
+    :default :
+      - '…'
+  :mdash :
+    :re : '\s*(?<dash> - |--|–|—)\s*'
+    :default :
+      - '—'
+    :ru :
+      - ' — '
+    :us :
+      - ' – '
 
+# MUST be the last section, since it’ kinda cleanup
 :orphans :
   :dangling_right :
     :re : '(?<=\s|\A)(\p{L})\s+'

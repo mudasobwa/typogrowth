@@ -47,7 +47,9 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here is http://wikipedia.org. See?."  | "Here is http://wikipedia.org. See?." |
         | "Here is exclamation ellipsis!.."      | "Here is exclamation ellipsis!.."     |
         | "Here is exclamation ellipsis! . ."    | "Here is exclamation ellipsis!.."     |
-        | "Here are 'english' quotes . ."        | "Here are “english” quotes.."         |
+        | "Here we go ; semicolon .. ."          | "Here we go; semicolon…"              |
+        | "Here are ' english ' quotes . ."      | "Here are ‘english’ quotes.."         |
+        | "Here are " english " quotes . ."      | "Here are “english” quotes.."         |
         | "Here we go : colon . ."               | "Here we go: colon.."                 |
 
   Scenario: Inplace string modification
