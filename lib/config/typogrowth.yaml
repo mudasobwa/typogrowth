@@ -153,6 +153,6 @@
     :default :
       - ' \1'
   :extra_spaces :
-    :re : '\s+'
+    :re : ' +'
     :default :
       - ' '
