@@ -98,3 +98,13 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here 'you' go."          | "Here “you” go."                      |
         | "Тут 'русский' язык."     | "Тут «русский» язык."                 |
 
+  Scenario Outline: Section pick-up
+    Given the input string is <input>
+    When input string is processed with Typogrowl’s typography parser with section "quotes"
+    Then the typoed result should equal to <output>
+
+    Examples:
+        | input                     | output                                |
+        | "Here 'you' - go."          | "Here “you” - go."                  |
+        | "Тут 'русский' --- язык."     | "Тут «русский» --- язык."         |
+

@@ -82,7 +82,7 @@ module Typogrowth
     # @param str [String] the string to be typographyed inplace
     # @param lang the language to use rules for
     #
-    def parse str, lang: :default, shadows: []
+    def parse str, lang: :default, shadows: [], sections: nil
       lang = lang.to_sym
       delims = Parser.safe_delimiters str
       str.split(/\R{2,}/).map { |para|
@@ -90,6 +90,7 @@ module Typogrowth
           para.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
         }
         @yaml.each { |key, values|
+          next if sections && ![*sections].include?(key)
           values.each { |k, v|
             if !!v[:re]
               v[lang] = v[:default] if (!v[lang] || v[lang].size.zero?)
@@ -143,13 +144,13 @@ module Typogrowth
     end
 
     # Out-of-place version of `String` typographing. See #parse!
-    def self.parse str, lang: :default, shadows: []
-      Parser.new.parse str, lang: lang, shadows: shadows
+    def self.parse str, lang: :default, shadows: [], sections: nil
+      Parser.new.parse str, lang: lang, shadows: shadows, sections: sections
     end
 
     # Out-of-place version of `String` typographing. See #parse!
-    def self.parse! str, lang: :default, shadows: []
-      str.replace self.parse str, lang: lang, shadows: shadows
+    def self.parse! str, lang: :default, shadows: [], sections: nil
+      str.replace self.parse str, lang: lang, shadows: shadows, sections: sections
     end
 
     # Out-of-place version of `String` typographing. See #parse!
@@ -171,12 +172,12 @@ module Typogrowth
     @@instance = Parser.new
   end
 
-  def self.parse str, lang: :default, shadows: []
-    Parser.parse str, lang: lang, shadows: shadows
+  def self.parse str, lang: :default, shadows: [], sections: nil
+    Parser.parse str, lang: lang, shadows: shadows, sections: sections
   end
 
-  def self.parse! str, lang: :default, shadows: []
-    Parser.parse! str, lang: lang, shadows: shadows
+  def self.parse! str, lang: :default, shadows: [], sections: nil
+    Parser.parse! str, lang: lang, shadows: shadows, sections: sections
   end
 
   def self.is_ru? str, shadows: []

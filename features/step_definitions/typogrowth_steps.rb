@@ -14,6 +14,11 @@ When(/^input string is processed with Typogrowl’s typography parser with lang 
   @typo = Typogrowth.parse @content, lang: lang
 end
 
+When(/^input string is processed with Typogrowl’s typography parser with section "(.*?)"$/) do |sect|
+  @content.gsub! /\\+"/, '"'
+  @typo = @content.typo sections: sect.to_sym
+end
+
 When(/^input string is modified inplace with typo!$/) do
   @typoed = @content.dup
   @typoed.typo!
@@ -36,7 +41,7 @@ Then(/^the call to string’s typo should equal to "(.*?)"$/) do |str|
 end
 
 Then(/^the call to string’s typo with lang "(.*?)" should equal to "(.*?)"$/) do |lang, str|
-  @content.typo('ru').should == str
+  @content.typo(lang: 'ru').should == str
 end
 
 Then(/^typoed result should equal to "(.*?)"$/) do |str|
