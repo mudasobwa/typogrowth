@@ -77,7 +77,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                                  | output                                |
         | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>"                      |
 
-  Scenario Outline: Language determining
+  Scenario Outline: Language recognition
     Given the input string is <input>
     When input string language is determined
     Then the language should equal to <output>
@@ -86,3 +86,14 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                                  | output                                |
         | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "us" |
         | "<p><img src="http://mudasobwa.ru/i/self.jpg">Здесь: http://wikipedia.ru</p>" | "ru" |
+
+  Scenario Outline: Language punctuation
+    Given the input string is <input>
+    When input string is processed with Typogrowl’s typography parser
+    Then the call to string’s typo should equal to <output>
+
+    Examples:
+        | input                     | output                                |
+        | "Here 'you' go."          | "Here “you” go."                      |
+        | "Тут 'русский' язык."     | "Тут «русский» язык."                 |
+

@@ -154,7 +154,7 @@ module Typogrowth
 
     # Out-of-place version of `String` typographing. See #parse!
     def self.is_ru? str, shadows: []
-      Parser.new.is_ru? str, shadows: shadows
+      @@instance.is_ru? str, shadows: shadows
     end
 
     DEFAULT_SET = 'typogrowth'
@@ -167,6 +167,8 @@ module Typogrowth
       @shadows = [HTML_TAG_RE, URI.regexp(['ftp', 'http', 'https', 'mailto'])]
     end
 
+    # Ready-to-use single instance
+    @@instance = Parser.new
   end
 
   def self.parse str, lang: :default, shadows: []
