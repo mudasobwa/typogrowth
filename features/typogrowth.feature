@@ -77,3 +77,12 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                                  | output                                |
         | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>"                      |
 
+  Scenario Outline: Language determining
+    Given the input string is <input>
+    When input string language is determined
+    Then the language should equal to <output>
+
+    Examples:
+        | input                                  | output                                |
+        | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "us" |
+        | "<p><img src="http://mudasobwa.ru/i/self.jpg">Здесь: http://wikipedia.ru</p>" | "ru" |

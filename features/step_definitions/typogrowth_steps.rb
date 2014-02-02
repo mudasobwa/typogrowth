@@ -19,6 +19,10 @@ When(/^input string is modified inplace with typo!$/) do
   @typoed.typo!
 end
 
+When(/^input string language is determined$/) do
+  @lang = @content.is_ru? ? "ru" : "us"
+end
+
 Then(/^neither single nor double quotes are left in the string$/) do
   @typo.scan(/"|'/).count.should == 0
 end
@@ -37,4 +41,8 @@ end
 
 Then(/^typoed result should equal to "(.*?)"$/) do |str|
   @typoed.should == str
+end
+
+Then(/^the language should equal to "(.*?)"$/) do |lang|
+  @lang.should == lang
 end

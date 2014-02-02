@@ -122,7 +122,16 @@ module Typogrowth
       }.join(%Q(
 
 ))
-      .gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m| Base64.decode64 m }
+      .gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m|
+        Base64.decode64(m).force_encoding('UTF-8')
+      }
+    end
+
+    def is_ru? str, shadows: []
+      clean = @shadows.concat([*shadows]).uniq.inject(str) { |memo, re|
+        memo.gsub(re, '')
+      }
+      clean.scan(/[А-Яа-я]/).size > clean.length / 3
     end
 
     def add_shadows re
@@ -143,6 +152,11 @@ module Typogrowth
       str.replace self.parse str, lang: lang, shadows: shadows
     end
 
+    # Out-of-place version of `String` typographing. See #parse!
+    def self.is_ru? str, shadows: []
+      Parser.new.is_ru? str, shadows: shadows
+    end
+
     DEFAULT_SET = 'typogrowth'
     HTML_TAG_RE = /<[^>]*>/
 
@@ -161,6 +175,10 @@ module Typogrowth
 
   def self.parse! str, lang: :default, shadows: []
     Parser.parse! str, lang: lang, shadows: shadows
+  end
+
+  def self.is_ru? str, shadows: []
+    Parser.is_ru? str, shadows: shadows
   end
 end
 

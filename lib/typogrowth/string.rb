@@ -14,4 +14,8 @@ class String
   def typo! lang = nil
     Typogrowth.parse!(self, lang: lang ? lang : I18n.locale)
   end
+
+  def is_ru? shadows = []
+    Typogrowth.is_ru? self, shadows: shadows
+  end
 end
