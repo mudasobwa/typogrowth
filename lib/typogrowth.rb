@@ -135,6 +135,18 @@ module Typogrowth
       clean.scan(/[А-Яа-я]/).size > clean.length / 3
     end
 
+    def defuse str, elements, shadows: []
+      delims = Parser.safe_delimiters str
+      s = str.dup
+      @shadows.concat([*shadows]).uniq.each { |re|
+        s.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
+      }
+      s.gsub! /(#{elements.map {|e| Regexp.escape e}.join('|')})/, ' \1 '
+      s.gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m|
+        Base64.decode64(m).force_encoding('UTF-8')
+      }
+    end
+
     def add_shadows re
       @shadows.concat [*re]
     end
@@ -156,6 +168,11 @@ module Typogrowth
     # Out-of-place version of `String` typographing. See #parse!
     def self.is_ru? str, shadows: []
       @@instance.is_ru? str, shadows: shadows
+    end
+
+    # Out-of-place version of `String` typographing. See #parse!
+    def self.defuse str, elements, shadows: []
+      Parser.new.defuse str, elements, shadows: shadows
     end
 
     DEFAULT_SET = 'typogrowth'
@@ -182,6 +199,10 @@ module Typogrowth
 
   def self.is_ru? str, shadows: []
     Parser.is_ru? str, shadows: shadows
+  end
+
+  def self.defuse str, elements, shadows: []
+    Parser.defuse str, elements, shadows: shadows
   end
 end
 
