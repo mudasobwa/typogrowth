@@ -51,6 +51,7 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here are ' english ' quotes . ."      | "Here are ‘english’ quotes.."         |
         | "Here are " english " quotes . ."      | "Here are “english” quotes.."         |
         | "Here we go : colon . ."               | "Here we go: colon.."                 |
+        | "Here are ( brackets )  parenthesis."  | "Here are (brackets) parenthesis."    |
 
   Scenario: Inplace string modification
     Given the input string is "Foo 'Bar' Baz"
