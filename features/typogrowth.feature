@@ -30,8 +30,8 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                          | output                             |
         | "И Бог сказал: \"Я - слышу \"Бум\" и \"Бам\" где-то там\" , и стало светло." | "И Бог сказал: «Я — слышу „Бум“ и „Бам“ где-то там», и стало светло." |
         | "И Бог сказал: \"Я - слышу \"Бум \"и\" Бам\" где-то там\" , и стало светло." | "И Бог сказал: «Я — слышу „Бум «и» Бам“ где-то там», и стало светло." |
-        | "Строка со ссылкой: http://wikipedia.org (ссылка)." | "Строка со ссылкой: http://wikipedia.org (ссылка)." | 
- 
+        | "Строка со ссылкой: http://wikipedia.org (ссылка)." | "Строка со ссылкой: http://wikipedia.org (ссылка)." |
+
   Scenario Outline: Spacing before/after punctuation
     Given the input string is <input>
     When input string is processed with Typogrowl’s typography parser
@@ -47,12 +47,14 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here is http://wikipedia.org. See?."  | "Here is http://wikipedia.org. See?." |
         | "Here is exclamation ellipsis!.."      | "Here is exclamation ellipsis!.."     |
         | "Here is exclamation ellipsis! . ."    | "Here is exclamation ellipsis!.."     |
+        | "Here are 'english' quotes . ."        | "Here are “english” quotes.."         |
+        | "Here we go : colon . ."               | "Here we go: colon.."                 |
 
   Scenario: Inplace string modification
     Given the input string is "Foo 'Bar' Baz"
     When input string is modified inplace with typo!
     Then typoed result should equal to "Foo “Bar” Baz"
-    
+
   Scenario Outline: Orphans handling
     Given the input string is <input>
     When input string is processed with Typogrowl’s typography parser
@@ -62,4 +64,4 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
     Examples:
         | input                                  | output                                |
         | "This is a cat."                       | "This is a cat."                      |
-    
+
