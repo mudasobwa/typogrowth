@@ -67,3 +67,13 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | input                                  | output                                |
         | "This is a cat."                       | "This is a cat."                      |
 
+  Scenario Outline: Shadows handling
+    Given the input string is <input>
+    When input string is processed with Typogrowl’s typography parser
+    Then the typoed result should equal to <output>
+    And the call to string’s typo should equal to <output>
+
+    Examples:
+        | input                                  | output                                |
+        | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>"                      |
+

@@ -122,7 +122,7 @@ module Typogrowth
       }.join(%Q(
 
 ))
-      .gsub(/#{delims.first}(.*)#{delims.last}/m) { |m| Base64.decode64 m }
+      .gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m| Base64.decode64 m }
     end
 
     def add_shadows re
@@ -144,13 +144,13 @@ module Typogrowth
     end
 
     DEFAULT_SET = 'typogrowth'
-    HTML_TAG_RE = /<[A-Za-z]+(.*?)>/
+    HTML_TAG_RE = /<[^>]*>/
 
     def initialize file = nil
       file = DEFAULT_SET unless file
       @yaml = YAML.load_file "#{File.dirname(__FILE__)}/config/#{file}.yaml"
       @yaml.delete(:placeholder)
-      @shadows = [URI.regexp, HTML_TAG_RE]
+      @shadows = [HTML_TAG_RE, URI.regexp(['ftp', 'http', 'https', 'mailto'])]
     end
 
   end
