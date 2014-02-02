@@ -8,15 +8,15 @@ require_relative 'typogrowth/version'
 require_relative 'typogrowth/string'
 require_relative 'utils/hash_recursive_merge'
 
-# 
-# = String typographing with language support. 
-# 
-# Parses and corrects the typography in strings. It supports 
+#
+# = String typographing with language support.
+#
+# Parses and corrects the typography in strings. It supports
 # different language rules and user rules customization.
-# 
+#
 # The package also monkeypatches `String` class with both
 # `typo` and `typo!` methods.
-# 
+#
 # Category::    Ruby
 # Author::      Alexei Matyushkin <am@mudasobwa.ru>
 # Copyright::   2013 The Authors
@@ -27,58 +27,69 @@ require_relative 'utils/hash_recursive_merge'
 module Typogrowth
   # Internal exception class just to make the exception distinction possible
   class MalformedRulesFile < Exception ; end
-  
-  # Parses and corrects the typography in strings. It supports 
+
+  # Parses and corrects the typography in strings. It supports
   # different language rules and easy user rules customization.
   class Parser
-    attr_reader :yaml
-    
+    attr_reader :yaml, :shadows
+
+    def self.safe_delimiters str
+      delimiters = ['❮', '❯']
+      loop do
+        break delimiters unless str.match(/#{delimiters.join('|')}/)
+        delimiters.map! {|d| d*2}
+      end
+    end
+
     #
     # Recursively merges the initial settings with custom.
-    # 
+    #
     # To supply your own rules to processing:
-    # 
-    # - create a +hash+ of additional rules in the same form as in the 
+    #
+    # - create a +hash+ of additional rules in the same form as in the
     # standard `typogrowth.yaml` file shipped with a project
     # - merge the hash with the standard one using this function
-    # 
+    #
     # For instance, to add french rules one is to merge in the following yaml:
-    # 
+    #
     #     :quotes :
     #       :punctuation :
     #         :fr : "\\k<quote>\\k<punct>"
     #     …
     #
-    def self.merge custom
-      instance.yaml.rmerge!(custom)
+    def merge custom
+      yaml.rmerge!(custom)
     end
-    
+
     #
     # Inplace version of string typographying.
-    # 
+    #
     # Retrieves the string and changes all the typewriters quotes (doubles
     # and sigles), to inches, minutes, seconds, proper quotation signs.
-    # 
-    # While the input strings are e.g. 
-    #     
+    #
+    # While the input strings are e.g.
+    #
     #     And God said "Baz heard "Bar" once" , and there was light.
     #     That's a 6.3" man, he sees sunsets at 10°20'30" E.
-    #     
+    #
     # It will produce:
-    # 
+    #
     #     And God said “Baz heard ‘Bar’ once,” and there was light.
     #     That’s a 6.3″ man, he sees sunsets at 10°20′30″ E.
-    #     
+    #
     # The utility also handles dashes as well.
-    # 
+    #
     # @param str [String] the string to be typographyed inplace
     # @param lang the language to use rules for
     #
-    def self.parse str, lang = :default
+    def parse str, lang: :default, shadows: []
       lang = lang.to_sym
+      delims = Parser.safe_delimiters str
       str.split(/\R{2,}/).map { |para|
-        para.gsub(URI.regexp) { |m| "⚓#{Base64.encode64 m}⚓" }
-        instance.yaml.each { |key, values|
+        @shadows.concat([*shadows]).uniq.each { |re|
+          para.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
+        }
+        @yaml.each { |key, values|
           values.each { |k, v|
             if !!v[:re]
               v[lang] = v[:default] if (!v[lang] || v[lang].size.zero?)
@@ -93,14 +104,14 @@ module Typogrowth
                 para.gsub!(/#{v[lang].first}/) { |m|
                   prev = $`
                   obsoletes = prev.count(v[lang].join)
-                  compliants = values[v[:compliant].to_sym][lang] || 
+                  compliants = values[v[:compliant].to_sym][lang] ||
                                values[v[:compliant].to_sym][:default]
                   obsoletes -= prev.count(compliants.join) \
                     if !!v[:compliant]
                   !!v[:slave] ?
                     obsoletes -= prev.count(v[:original]) + 1 :
                     obsoletes += prev.count(v[:original])
-                  
+
                   v[lang][obsoletes % v[lang].size]
                 }
               end
@@ -111,35 +122,45 @@ module Typogrowth
       }.join(%Q(
 
 ))
-      .gsub(/⚓(.*)⚓/m) { |m| Base64.decode64 m }
+      .gsub(/#{delims.first}(.*)#{delims.last}/m) { |m| Base64.decode64 m }
+    end
+
+    def add_shadows re
+      @shadows.concat [*re]
+    end
+
+    def del_shadows re
+      @shadows.delete_if { |stored| [*re].include? stored }
     end
 
     # Out-of-place version of `String` typographing. See #parse!
-    def self.parse! str, lang = :default
-      str.replace self.parse(str, lang)
+    def self.parse str, lang: :default, shadows: []
+      Parser.new.parse str, lang: lang, shadows: shadows
     end
-  private
+
+    # Out-of-place version of `String` typographing. See #parse!
+    def self.parse! str, lang: :default, shadows: []
+      str.replace self.parse str, lang: lang, shadows: shadows
+    end
+
     DEFAULT_SET = 'typogrowth'
-    
-    def initialize file
+    HTML_TAG_RE = /<[A-Za-z]+(.*?)>/
+
+    def initialize file = nil
+      file = DEFAULT_SET unless file
       @yaml = YAML.load_file "#{File.dirname(__FILE__)}/config/#{file}.yaml"
       @yaml.delete(:placeholder)
+      @shadows = [URI.regexp, HTML_TAG_RE]
     end
 
-    @@instance = Parser.new(DEFAULT_SET)
-    
-    def self.instance 
-      @@instance
-    end
-        
-    private_class_method :new  
   end
 
-  def self.parse str, lang = :default
-    Parser.parse str, lang
+  def self.parse str, lang: :default, shadows: []
+    Parser.parse str, lang: lang, shadows: shadows
   end
-  def self.parse! str, lang = :default
-    Parser.parse! str, lang
+
+  def self.parse! str, lang: :default, shadows: []
+    Parser.parse! str, lang: lang, shadows: shadows
   end
 end
 

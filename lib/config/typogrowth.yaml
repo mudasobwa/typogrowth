@@ -34,14 +34,14 @@
   :apostrophe_pre :
     :pattern : ''''
     :re : '(?<=\p{Alpha})('')(?=\p{Alpha})'
-    :default : 
+    :default :
       - '♻'
   # And God said 'Foos' game is over'.
   #                  ⇑
   :apostrophe_squeez :
     :pattern : ''''
     :re : '(?<=s)('')(?=\s)'
-    :default : 
+    :default :
       - '♻'
   # And God said "∇×(∇×F) = ∇(∇·F) − ∇2F" and there was light.
   #              ⇑
@@ -130,7 +130,7 @@
     :re : '([!?.]+)(?:\s*)(\.+)'
     :default :
       - '\1\2'
-      
+
 :orphans :
   :dangling_right :
     :re : '(?<=\s|\A)(\p{L})\s+'

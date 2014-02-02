@@ -11,7 +11,7 @@ end
 
 When(/^input string is processed with Typogrowl’s typography parser with lang "(.*?)"$/) do |lang|
   @content.gsub! /\\+"/, '"'
-  @typo = Typogrowth.parse @content, lang
+  @typo = Typogrowth.parse @content, lang: lang
 end
 
 When(/^input string is modified inplace with typo!$/) do
