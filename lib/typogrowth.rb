@@ -138,7 +138,7 @@ module Typogrowth
     def defuse str, elements, shadows: []
       delims = Parser.safe_delimiters str
       s = str.dup
-      @shadows.concat([*shadows]).uniq.each { |re|
+      [*shadows].concat(@shadows).uniq.each { |re|
         s.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
       }
       s.gsub! /(#{elements.map {|e| Regexp.escape e}.join('|')})/, ' \1 '
@@ -176,7 +176,7 @@ module Typogrowth
     end
 
     DEFAULT_SET = 'typogrowth'
-    HTML_TAG_RE = /<[^>]*>/
+    HTML_TAG_RE = /<\s*[A-Za-z][^>]*>/
 
     def initialize file = nil
       file = DEFAULT_SET unless file

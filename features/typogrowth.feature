@@ -76,7 +76,8 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
 
     Examples:
         | input                                  | output                                |
-        | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>"                      |
+        | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" | "<p><img src="http://mudasobwa.ru/i/self.jpg">Here: http://wikipedia.ru</p>" |
+        | "<p>http://mudasobwa.ru/i/self.jpg With caption<br/> <small><a href='http://wikipedia.ru'>Wiki</a></small> </p>" | "<p>http://mudasobwa.ru/i/self.jpg With caption<br/> <small><a href='http://wikipedia.ru'>Wiki</a></small> </p>" |
 
   Scenario Outline: Language recognition
     Given the input string is <input>

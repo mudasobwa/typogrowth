@@ -114,11 +114,11 @@
 
 :punctuation :
   :opening_orphan :
-    :re : '([(¿¡§#№]|\p{Sc})(?:\s+)'
+    :re : '([(¿¡§#№“‘„«]|\p{Sc})(?:\s+)'
     :default :
       - '\1'
   :closing_orphan :
-    :re : '(?:\s+)([.,:;!?)])'
+    :re : '(?:\s+)([.,:;!?)”’»])'
     :default :
       - '\1'
   :closing_clamped :
