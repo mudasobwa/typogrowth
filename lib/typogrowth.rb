@@ -141,10 +141,10 @@ module Typogrowth
       [*shadows].concat(@shadows).uniq.each { |re|
         s.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
       }
-      s.gsub! /(#{elements.map {|e| Regexp.escape e}.join('|')})/, ' \1 '
-      s.gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m|
-        Base64.decode64(m).force_encoding('UTF-8')
-      }
+      s.gsub(/(#{elements.map {|e| Regexp.escape e}.join('|')})/, ' \1 ')
+       .gsub(/#{delims.first}(.*?)#{delims.last}/m) { |m|
+         Base64.decode64(m).force_encoding('UTF-8')
+       }
     end
 
     def add_shadows re

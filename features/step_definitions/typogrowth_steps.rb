@@ -4,6 +4,10 @@ Given(/^the input string is "(.*?)"$/) do |str|
   @content = str
 end
 
+Given(/^the input string is$/) do |str|
+  @content = str
+end
+
 When(/^input string is processed with Typogrowl’s typography parser$/) do
   @content.gsub! /\\+"/, '"'
   @typo = Typogrowth.parse @content
@@ -33,6 +37,10 @@ Then(/^neither single nor double quotes are left in the string$/) do
 end
 
 Then(/^the typoed result should equal to "(.*?)"$/) do |str|
+  @typo.should == str
+end
+
+Then(/^the typoed result should equal to$/) do |str|
   @typo.should == str
 end
 

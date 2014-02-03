@@ -105,7 +105,25 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
     Then the typoed result should equal to <output>
 
     Examples:
-        | input                     | output                                |
-        | "Here 'you' - go."          | "Here “you” - go."                  |
+        | input                         | output                            |
+        | "Here 'you' - go."            | "Here “you” - go."                |
         | "Тут 'русский' --- язык."     | "Тут «русский» --- язык."         |
 
+  Scenario: Inplace tags
+    Given the input string is
+    """
+    http://qipowl.herokuapp.com/images/owl.png
+
+    ☞ Video embedded:
+
+    http://www.youtube.com/watch?v=KFKxlYNfT_o
+    """
+    When input string is processed with Typogrowl’s typography parser
+    Then the typoed result should equal to
+    """
+    http://qipowl.herokuapp.com/images/owl.png
+
+    ☞ Video embedded:
+
+    http://www.youtube.com/watch?v=KFKxlYNfT_o
+    """
