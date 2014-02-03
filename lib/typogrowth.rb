@@ -86,7 +86,7 @@ module Typogrowth
       lang = lang.to_sym
       delims = Parser.safe_delimiters str
       str.split(/\R{2,}/).map { |para|
-        @shadows.concat([*shadows]).uniq.each { |re|
+        [*shadows].concat(@shadows).uniq.each { |re|
           para.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
         }
         @yaml.each { |key, values|
@@ -129,7 +129,7 @@ module Typogrowth
     end
 
     def is_ru? str, shadows: []
-      clean = @shadows.concat([*shadows]).uniq.inject(str) { |memo, re|
+      clean = [*shadows].concat(@shadows).uniq.inject(str) { |memo, re|
         memo.gsub(re, '')
       }
       clean.scan(/[А-Яа-я]/).size > clean.length / 3

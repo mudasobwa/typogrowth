@@ -8,13 +8,23 @@ class String
 
   # Typographyes the string and returns a result
   # See Typogrowth::Parser#parse
-  def typo lang: nil, sections: nil
-    Typogrowth.parse(self, lang: lang ? lang : is_ru? ? "ru" : I18n.locale, sections: sections)
+  def typo lang: nil, sections: nil, shadows: nil
+    Typogrowth.parse(
+      self,
+      lang: lang ? lang : is_ru? ? "ru" : I18n.locale,
+      shadows: shadows,
+      sections: sections
+    )
   end
   # Typographyes the string inplace
   # See Typogrowth::Parser#parse!
-  def typo! lang: nil, sections: nil
-    Typogrowth.parse!(self, lang: lang ? lang : is_ru? ? "ru" : I18n.locale, sections: sections)
+  def typo! lang: nil, sections: nil, shadows: nil
+    Typogrowth.parse!(
+      self,
+      lang: lang ? lang : is_ru? ? "ru" : I18n.locale,
+      shadows: shadows,
+      sections: sections
+    )
   end
 
   def is_ru? shadows: []
