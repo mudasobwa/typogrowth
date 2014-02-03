@@ -74,11 +74,10 @@
 #      - '〉'
     :ru :
       - '»'
-      - '“'
+      - '“ '
     :us :
       - '’'
       - '”'
-
   # That's a 6.3" man, he sees sunsets at 10°20'30" E.
   #     ⇑
   :apostrophe_post :
@@ -114,7 +113,7 @@
 
 :punctuation :
   :opening_orphan :
-    :re : '([(¿¡§#№‘„«]|\p{Sc})(?:\s+)'
+    :re : '([(¿¡§#№‘„«“]|\p{Sc})(?:\s+)'
     :default :
       - '\1'
   :closing_orphan :
@@ -134,7 +133,7 @@
     :default :
       - '…'
   :mdash :
-    :re : '\s*(?<dash> - |--|–|—)\s*'
+    :re : '\p{Space}*(?<dash>\s-\s|--|–|—)\s*'
     :default :
       - '—'
     :ru :
