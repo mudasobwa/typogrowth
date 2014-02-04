@@ -1,4 +1,4 @@
-:quotes :
+:sequence :
   :punctuation :
     :re : '(?<quote>''|"|\))\s*(?<punct>[.,!?]+)'
     :default :
@@ -6,6 +6,7 @@
     :ru :
       - '\k<quote>\k<punct>'
 
+:quotes :
   # That's a 6.3" man, he sees sunsets at 10°20'30" E.
   #             ⇑
   :inch :
@@ -74,7 +75,7 @@
 #      - '〉'
     :ru :
       - '»'
-      - '“ '
+      - '“'
     :us :
       - '’'
       - '”'
@@ -112,8 +113,20 @@
       - '”'
 
 :punctuation :
+  :bloody_quote_en :
+    :re : '(“)(\s+)'
+    :default :
+      - '\1'
+    :ru :
+      - '\1 '
+  :bloody_quote_ru :
+    :re : '(\s+)(“)'
+    :default :
+      - ' \1'
+    :ru :
+      - '\1'
   :opening_orphan :
-    :re : '([(¿¡§#№‘„«“]|\p{Sc})(?:\s+)'
+    :re : '([(¿¡§#№‘„«]|\p{Sc})(?:\s+)'
     :default :
       - '\1'
   :closing_orphan :
