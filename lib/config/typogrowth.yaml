@@ -116,15 +116,15 @@
   :bloody_quote_en :
     :re : '(“)(\s+)'
     :default :
-      - '\1'
+      - '\1\2'
     :ru :
       - '\1 '
   :bloody_quote_ru :
     :re : '(\s+)(“)'
     :default :
-      - ' \1'
+      - ' \2'
     :ru :
-      - '\1'
+      - '\1\2'
   :opening_orphan :
     :re : '([(¿¡§#№‘„«]|\p{Sc})(?:\s+)'
     :default :
