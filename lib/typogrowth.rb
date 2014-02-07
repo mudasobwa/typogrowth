@@ -33,14 +33,6 @@ module Typogrowth
   class Parser
     attr_reader :yaml, :shadows
 
-    def self.safe_delimiters str
-      delimiters = ['❮', '❯']
-      loop do
-        break delimiters unless str.match(/#{delimiters.join('|')}/)
-        delimiters.map! {|d| d*2}
-      end
-    end
-
     #
     # Recursively merges the initial settings with custom.
     #
@@ -84,7 +76,7 @@ module Typogrowth
     #
     def parse str, lang: :default, shadows: [], sections: nil
       lang = lang.to_sym
-      delims = Parser.safe_delimiters str
+      delims = str.safe_delimiters
       str.split(/\R{2,}/).map { |para|
         [*shadows].concat(@shadows).uniq.each { |re|
           para.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
