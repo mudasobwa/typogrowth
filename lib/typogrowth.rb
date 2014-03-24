@@ -128,7 +128,7 @@ module Typogrowth
     end
 
     def defuse str, elements, shadows: []
-      delims = Parser.safe_delimiters str
+      delims = str.safe_delimiters
       s = str.dup
       [*shadows].concat(@shadows).uniq.each { |re|
         s.gsub!(re) { |m| "#{delims.first}#{Base64.encode64 m}#{delims.last}" }
