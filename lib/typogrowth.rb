@@ -169,13 +169,21 @@ module Typogrowth
     end
 
     DEFAULT_SET = 'typogrowth'
+    DEFAULT_SHADOWS = 'shadows'
     HTML_TAG_RE = /<\s*[A-Za-z][^>]*>/
 
-    def initialize file = nil
+    def initialize file = nil, shadows = nil
       file = DEFAULT_SET unless file
       @yaml = YAML.load_file "#{File.dirname(__FILE__)}/config/#{file}.yaml"
       @yaml.delete(:placeholder)
-      @shadows = [HTML_TAG_RE, URI.regexp(['ftp', 'http', 'https', 'mailto'])]
+      shadows = DEFAULT_SHADOWS unless shadows
+      shadows = YAML.load_file("#{File.dirname(__FILE__)}/config/#{shadows}.yaml")
+      @shadows = ([
+        (shadows[:custom].map { |g| /#{g}/ } if shadows[:custom]),
+        (shadows[:grip].map { |g| /(<=#{g})([^#{g}]*)(?=#{g})/m } if shadows[:grip]),
+        HTML_TAG_RE,
+        URI.regexp(['ftp', 'http', 'https', 'mailto'])
+      ] - [nil]).flatten
     end
 
     # Ready-to-use single instance

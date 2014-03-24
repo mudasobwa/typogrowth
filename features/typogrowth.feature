@@ -109,6 +109,16 @@ Feature: Text is to be typographed (spacing and pubctuation are to be sanitized)
         | "Here 'you' - go."            | "Here “you” - go."                |
         | "Тут 'русский' --- язык."     | "Тут «русский» --- язык."         |
 
+  Scenario Outline: Predefined shadows
+    Given the input string is <input>
+    When input string is processed with Typogrowl’s typography parser
+    Then the typoed result should equal to <output>
+
+    Examples:
+        | input                         | output                            |
+        | "This is λsystem.dllλ file."  | "This is λsystem.dllλ file."      |
+        | "This is ✓8:35✓ time."       | "This is ✓8:35✓ time."           |
+
   Scenario: Inplace tags
     Given the input string is
     """
