@@ -180,7 +180,7 @@ module Typogrowth
       shadows = YAML.load_file("#{File.dirname(__FILE__)}/config/#{shadows}.yaml")
       @shadows = ([
         (shadows[:custom].map { |g| /#{g}/ } if shadows[:custom]),
-        (shadows[:grip].map { |g| /(<=#{g})([^#{g}]*)(?=#{g})/m } if shadows[:grip]),
+        (shadows[:grip].map { |g| /(?<=#{g})([^#{g}]*)(?=#{g})/m } if shadows[:grip]),
         HTML_TAG_RE,
         URI.regexp(['ftp', 'http', 'https', 'mailto'])
       ] - [nil]).flatten
